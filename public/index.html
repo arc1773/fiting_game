@@ -1,0 +1,157 @@
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Micro+5+Charted&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      font-family: "Jersey 10", sans-serif;
+      font-size: 50px;
+    }
+    p {
+      font-size: 30px;
+    }
+
+    #button {
+      color: black;
+      display: flex;
+      width: 300px;
+      height: 100px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+
+      background-color: aqua;
+    }
+  </style>
+</head>
+<body>
+  <!--<div
+    style="
+      background-color: antiquewhite;
+    "
+  >
+    <p id="image_p">img_p:</p>
+    <p id="image_e">img_e:</p>
+    <p id="user">:</p>
+  </div>-->
+  <!--red container div-->
+  <div style="position: relative; display: inline-block">
+    <!--smaller red container div-->
+    <p id="roomm" class="room" style="position: absolute; font-size: 19px; left: 20px; top: 5px; margin: 0;">your room:</p>
+    
+    <div
+      id="pan"
+      style="
+        position: absolute;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 20px;
+      "
+    >
+      <!--player health-->
+      <div
+        style="
+          position: relative;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          border-top: solid 4px white;
+          border-left: solid 4px white;
+          border-bottom: solid 4px white;
+        "
+      >
+        <div style="background-color: red; height: 30px; width: 100%"></div>
+        <div
+          id="playerAHealth"
+          style="
+            position: absolute;
+            background: #818cf8;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+          "
+        ></div>
+      </div>
+      <!--timer-->
+      <div
+        id="timer"
+        style="
+          background-color: black;
+          height: 50px;
+          width: 100px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          border: solid 4px white;
+        "
+      >
+        00
+      </div>
+      <!--enemy health-->
+      <div
+        style="
+          position: relative;
+          width: 100%;
+          border-top: solid 4px white;
+          border-right: solid 4px white;
+          border-bottom: solid 4px white;
+        "
+      >
+        <div style="background-color: red; height: 30px"></div>
+        <div
+        id="playerBHealth"
+          style="
+            position: absolute;
+            background: #818cf8;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+          "
+        ></div>
+      </div>
+    </div>
+    <div
+      id="buttons"
+      style="
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      "
+    >
+      <div id="displayText"></div>
+      <div id="button">play</div>
+      <div id="room"></div>
+    </div>
+    <canvas></canvas>
+  </div>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/classes.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="index.js"></script>
+</body>
