@@ -27,6 +27,7 @@ if (rooms) {
         user1: null,
         user2: null,
       },
+      game: false
     };
   }
 }
@@ -75,6 +76,7 @@ function onConnected(socket) {
         console.log(121)
         socket.leave(players[socket.id].room);
         //console.log(11)
+        rooms[players[socket.id].room].game = false
         players[socket.id].room = "none";
       }
     }
@@ -82,6 +84,7 @@ function onConnected(socket) {
     if (players[socket.id].game) {
       if (data.p_health < 1) {
         console.log(11)
+        rooms[players[socket.id].room].game = false
         players[socket.id].game = false;
       }
 
@@ -89,6 +92,7 @@ function onConnected(socket) {
         if (clients.size) {
           if (clients.size < 2) {
             console.log(12)
+            rooms[players[socket.id].room].game = false
             players[socket.id].game = false;
           }
         }
@@ -129,6 +133,8 @@ function onConnected(socket) {
 
             if (players[secondUser].wait_f_e) {
               console.log(`start game`);
+              rooms[players[socket.id].room].game = true
+
               players[socket.id].game = true
               players[socket.id].wait_f_e = false
 
@@ -144,15 +150,16 @@ function onConnected(socket) {
     data_to_e.velocity = data.velocity
     data_to_e.p_health = data.p_health
     data_to_e.change_sprite_to = data.change_sprite_to
-    //if(!players[socket.id].game && data_to_e.p_health != 100){
-    //  data_to_e.p_health = 100
-    //  console.log(100)
-    //}
+    
     socket.broadcast.to(players[socket.id].room).emit("get_to_enemy", data_to_e);
 
-    data_to_r.game = players[socket.id].game;
-    data_to_r.wait_f_e = players[socket.id].wait_f_e
-    io.to(players[socket.id].room).emit("get_to_room", data_to_r);
+    if(players[socket.id].room != "none"){
+      data_to_r.game = rooms[players[socket.id].room].game
+      //data_to_r.game = players[socket.id].game;
+      data_to_r.wait_f_e = players[socket.id].wait_f_e
+      io.to(players[socket.id].room).emit("get_to_room", data_to_r);
+    }
+    
 
     data_to_p.user = players[socket.id].player
     data_to_p.room = players[socket.id].room;
