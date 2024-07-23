@@ -31,6 +31,8 @@ var act = "idle";
 var game = false;
 var wait_f_e = false;
 
+var ping = 12;
+
 const background = new Sprite({
   position: {
     x: 0,
@@ -202,6 +204,31 @@ function set_data_to_norm() {
   
 }
 
+
+var startTime = 0
+var endTime = 0
+
+function measurePing() {
+  startTime = Date.now();
+  socket.emit("measure_ping", "ping");
+
+  socket.on("measured_ping", (data) => {
+    if (data === 'pong') {
+      endTime = Date.now();
+      ping = endTime - startTime;
+      
+    }
+  })
+}
+
+show_ping();
+function show_ping(){
+  _("#ping").innerHTML=`Ping: ${ping}ms`
+  setTimeout(show_ping, 333);
+}
+
+
+
 function give_get() {
   var data = {
     position: player.position,
@@ -209,7 +236,7 @@ function give_get() {
     p_health: enemy.health,
     wait_f_e: wait_f_e,
     game: game,
-    change_sprite_to: act,
+    change_sprite_to: act
   };
   socket.emit("give_data", data);
 
@@ -220,6 +247,7 @@ function give_get() {
       player.health = data.p_health;
       enemy.switchSprite(data.change_sprite_to);
     }
+    
   });
 
   socket.on("get_to_room", (data) => {
@@ -252,6 +280,9 @@ function animate() {
   //document.getElementById("image_p").innerHTML = `img_p:${initialPlayerAData.position.x}`;
   //document.getElementById("image_e").innerHTML = `img_e:${initialPlayerBData.position.x}`;
   give_get();
+
+  measurePing()
+  
 
   window.requestAnimationFrame(animate);
 
@@ -301,27 +332,6 @@ function animate() {
       act = "attack1";
       player.switchSprite("attack1");
     }
-    //else {
-    //  act="idle"
-    //  player.switchSprite("idle");
-    //}
-
-    //enemy movement
-    //if (enemy.velocity.x == -5) {
-    //  enemy.switchSprite("run");
-    //} else if (enemy.velocity.x == 5) {
-    //  enemy.switchSprite("run");
-    //} else {
-    //  enemy.switchSprite("idle");
-    //}
-    //
-    //if (enemy.velocity.y < 0) {
-    //  enemy.switchSprite("jump");
-    //} else if (enemy.velocity.y > 0) {
-    //  enemy.switchSprite("fall");
-    //}
-
-    //direct for collision & enemy gets hit
     if (
       rectangularCollision({
         rectangle1: player,
@@ -356,14 +366,6 @@ function animate() {
         player.health + "%";
     }
 
-    //gsap.to('#playerHealth', {
-    //    width: player.health + "%"
-    //})
-
-    // end game based on health
-    //if (enemy.health <= 0 || player.health <= 0) {
-    //  determineWinner({ player, enemy, timerId });
-    //}
   } else {
     _("#roomm").style.display = "none";
     _("#buttons").style.display = "flex";
@@ -379,17 +381,6 @@ function animate() {
       _("#room").innerHTML = `your room is "${my_room}"`;
       _("#room").style.display = "flex";
     }
-
-    //document.getElementById("pan").style.display="none"
-
-    //gsap.to('#playerHealth', {
-    //    width: player.health + "%"
-    //})
-
-    //gsap.to('#enemyHealth', {
-    //    width: enemy.health + "%"
-    //})
-    //document.querySelector('#displayText').style.display = 'flex'
 
     if (user == "first") {
       document.getElementById("playerAHealth").style.width =
