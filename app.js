@@ -55,8 +55,8 @@ function onConnected(socket) {
   var data_to_e = {
   };
 
-  console.log(players);
-  console.log(rooms);
+  //console.log(players);
+  //console.log(rooms);
   socket.on("give_data", (data) => {
     var clients = io.sockets.adapter.rooms.get(players[socket.id].room);
 
@@ -65,7 +65,7 @@ function onConnected(socket) {
     
     if (!players[socket.id].game && !players[socket.id].wait_f_e) {
       if (players[socket.id].room != "none") {
-        console.log(players)
+        //console.log(players)
         if (rooms[players[socket.id].room].users.user1 != null) {
           rooms[players[socket.id].room].users.user1 = null;
         } else if (rooms[players[socket.id].room].users.user2 != null) {
@@ -73,9 +73,8 @@ function onConnected(socket) {
         }
         players[socket.id].player = null
         rooms[players[socket.id].room].num--;
-        console.log(121)
         socket.leave(players[socket.id].room);
-        //console.log(11)
+        console.log('player does not looking for game')
         rooms[players[socket.id].room].game = false
         players[socket.id].room = "none";
       }
@@ -83,7 +82,6 @@ function onConnected(socket) {
 
     if (players[socket.id].game) {
       if (data.p_health < 1) {
-        console.log(11)
         rooms[players[socket.id].room].game = false
         players[socket.id].game = false;
       }
@@ -91,7 +89,6 @@ function onConnected(socket) {
       if (clients) {
         if (clients.size) {
           if (clients.size < 2) {
-            console.log(12)
             rooms[players[socket.id].room].game = false
             players[socket.id].game = false;
           }
@@ -100,6 +97,7 @@ function onConnected(socket) {
     }
 
     if (players[socket.id].wait_f_e) {
+      console.log('player does not looking for game')
       if (players[socket.id].room == "none") {
         for (key in rooms) {
           if (rooms[key].num < 2) {
@@ -111,8 +109,6 @@ function onConnected(socket) {
             players[socket.id].room = "no_rooms_was_finded";
           }
         }
-        console.log(players); 
-        console.log(rooms);
         if (rooms[players[socket.id].room].users.user1 == null) {
           rooms[players[socket.id].room].users.user1 = socket.id;
           players[socket.id].player = "first"
