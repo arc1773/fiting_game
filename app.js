@@ -33,7 +33,6 @@ if (rooms) {
 }
 
 io.on("connection", onConnected);
-console.log("a player connected");
 function onConnected(socket) {
   players[socket.id] = {
     wait_f_e: false,
@@ -55,6 +54,8 @@ function onConnected(socket) {
   var data_to_e = {
   };
 
+  console.log(Object.keys(players).length);
+
   //console.log(players);
   //console.log(rooms);
   socket.on("give_data", (data) => {
@@ -74,7 +75,7 @@ function onConnected(socket) {
         players[socket.id].player = null
         rooms[players[socket.id].room].num--;
         socket.leave(players[socket.id].room);
-        console.log('player does not looking for game')
+        console.log('player is not looking for game')
         rooms[players[socket.id].room].game = false
         players[socket.id].room = "none";
       }
@@ -97,8 +98,8 @@ function onConnected(socket) {
     }
 
     if (players[socket.id].wait_f_e) {
-      console.log('player does not looking for game')
       if (players[socket.id].room == "none") {
+        console.log('player is looking for game')
         for (key in rooms) {
           if (rooms[key].num < 2) {
             socket.join(key);
@@ -178,6 +179,6 @@ function onConnected(socket) {
     }
     socket.leave(players[socket.id].room);
     delete players[socket.id];
-    console.log("a player disconnected");
+    console.log(Object.keys(players).length);
   });
 }
