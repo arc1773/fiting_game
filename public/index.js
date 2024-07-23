@@ -224,8 +224,8 @@ function give_get() {
 
   socket.on("get_to_room", (data) => {
     game = data.game;
-    if (data.wait_f_e != null) {
-      wait_f_e = data.wait_f_e;
+    if (data.game) {
+      wait_f_e = false;
     }
   });
   socket.on("get_to_player", (data) => {

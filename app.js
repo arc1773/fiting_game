@@ -153,7 +153,7 @@ function onConnected(socket) {
     if(players[socket.id].room != "none"){
       data_to_r.game = rooms[players[socket.id].room].game
       //data_to_r.game = players[socket.id].game;
-      data_to_r.wait_f_e = players[socket.id].wait_f_e
+      //data_to_r.wait_f_e = players[socket.id].wait_f_e
       io.to(players[socket.id].room).emit("get_to_room", data_to_r);
     }
     
